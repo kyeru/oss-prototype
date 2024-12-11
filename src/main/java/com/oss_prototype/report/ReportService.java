@@ -18,7 +18,7 @@ public class ReportService {
         try {
             // 1. access DB with token
             // 2. generate report
-            return jsonMapper.writeValueAsString(new DetectionReport());
+            return jsonMapper.writeValueAsString(new ModelReport());
         } catch (JsonProcessingException e) {
             log.error("json processing error");
         }

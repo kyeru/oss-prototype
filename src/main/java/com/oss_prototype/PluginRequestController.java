@@ -1,13 +1,7 @@
 package com.oss_prototype;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oss_prototype.detection.DetectionService;
-import com.oss_prototype.kafka.KafkaProducer;
-import com.oss_prototype.redis.RedisClient;
-import com.oss_prototype.detection.DetectionRequest;
-import com.oss_prototype.detection.RequestTokenGenerator;
-import com.oss_prototype.report.DetectionReport;
+import com.oss_prototype.detection.PluginRequest;
 import com.oss_prototype.report.ReportService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -28,11 +22,11 @@ public class PluginRequestController {
     }
 
     @PostMapping("/detect")
-    public ResponseEntity<?> detect(@RequestBody DetectionRequest requestData) {
+    public ResponseEntity<?> detect(@RequestBody PluginRequest requestData) {
         String token = detectionService.detectionWorkflow(requestData);
         if (token == null) {
             // TODO return error hint
-            return new ResponseEntity<>(new String(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR);
         } else {
             return new ResponseEntity<>(token, HttpStatus.OK);
         }

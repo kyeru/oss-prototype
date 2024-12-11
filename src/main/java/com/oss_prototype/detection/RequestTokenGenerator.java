@@ -13,7 +13,7 @@ public class RequestTokenGenerator {
         final MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
         String token = Base64.getEncoder().encodeToString(hash);
-        log.info("generated token: {}", token);
+        log.info("request token generated: {}", token);
         return token;
     }
 }

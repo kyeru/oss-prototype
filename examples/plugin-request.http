@@ -1,0 +1,4 @@
+### detection request
+curl -XPOST -H 'Content-Type:application/json' -d@post-data localhost:8080/detect
+
+---

@@ -23,8 +23,7 @@ public class AsyncModelReportReceiver {
     }
 
     @KafkaListener(
-        topics="${spring.kafka.report-topic}",
-        properties = {"spring.json.value.default.type=com.oss_prototype.report.ModelReport"}
+        topics="${spring.kafka.report-topic}"
     )
     public void generateReport(final String content) {
         ModelReport modelReport = generateModelReport(content);

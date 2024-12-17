@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: oss-prototype
+  kafka:
+    bootstrap-servers: 192.168.49.2:30421
+    producer:
+      topic: request
+    consumer:
+      group-id: oss-prototype
+      topic: result
+  redis:
+    host: localhost
+    port: 6379
+    password: CqpBB9pmZo
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+    web:
+      exposure:
+        include: health, info, shutdown

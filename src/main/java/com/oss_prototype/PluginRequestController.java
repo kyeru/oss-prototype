@@ -37,7 +37,7 @@ public class PluginRequestController {
         String report = reportService.generateReport(token);
         if (report == null) {
             // TODO return error hint
-            return new ResponseEntity<>(new String(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR);
         } else {
             return new ResponseEntity<>(report, HttpStatus.OK);
         }

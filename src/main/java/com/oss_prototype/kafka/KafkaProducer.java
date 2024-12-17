@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class KafkaProducer {
     private final KafkaTemplate<String, String> kafkaTemplate;
-    @Value("${spring.kafka.request-topic}")
+    @Value("${spring.kafka.producer.topic}")
     private String topic;
 
     public KafkaProducer(KafkaTemplate<String, String> kafkaTemplate) {

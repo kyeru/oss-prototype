@@ -2,20 +2,17 @@ spring:
   application:
     name: oss-prototype
   kafka:
-    #bootstrap-servers: 192.168.49.2:30421
-    #bootstrap-servers: 115.145.179.193:15001
+    # bootstrap-servers: 115.145.179.193:15001
     bootstrap-servers: comnet.skku.ac.kr:15001
+    producer:
+      topic: request
     consumer:
       group-id: oss-prototype
-    request-topic: dependency-graph
-    report-topic: detection-result
+      topic: result
   redis:
-    #host: localhost
-    #port: 6379
-    password: CqpBB9pmZo
     host: comnet.skku.ac.kr
     port: 15002
-#    password:
+    password: CqpBB9pmZo
 management:
   endpoint:
     shutdown:

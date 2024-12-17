@@ -3,22 +3,23 @@ package com.oss_prototype.detection;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oss_prototype.kafka.KafkaProducer;
-import com.oss_prototype.models.ModelName;
-import com.oss_prototype.redis.RedisClient;
+import com.oss_prototype.redis.RedisClientWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
 public class DetectionService {
-    private final ObjectMapper jsonMapper;
-    private final KafkaProducer kafkaProducer;
-    private final RedisClient redisClient;
-
+    public static final String WORK_STATUS_KEY_PREFIX = "status-";
     public static final String WORK_IN_PROGRESS = "in-progress";
     public static final String WORK_COMPLETE = "complete";
+    private static final long WORK_STATUS_TTL_SEC = 3600;
 
-    public DetectionService(final KafkaProducer kafkaProducer, final RedisClient redisClient) {
+    private final ObjectMapper jsonMapper;
+    private final KafkaProducer kafkaProducer;
+    private final RedisClientWrapper redisClient;
+
+    public DetectionService(final KafkaProducer kafkaProducer, final RedisClientWrapper redisClient) {
         this.jsonMapper = new ObjectMapper();
         this.kafkaProducer = kafkaProducer;
         this.redisClient = redisClient;
@@ -43,7 +44,7 @@ public class DetectionService {
             log.info("message to models: {}", jsonTaskMessage);
 
             // 3. create job status
-            redisClient.setValue(token, WORK_IN_PROGRESS);
+            updateTaskStatus(token, WORK_IN_PROGRESS);
 
             // 4. return token
             return token;
@@ -57,12 +58,7 @@ public class DetectionService {
         return null;
     }
 
-    public String getReportKey(final String modelName) {
-        // TODO make a unique report key
-        return modelName;
-    }
-
     public void updateTaskStatus(final String token, final String status) {
-        redisClient.setValue(token, WORK_COMPLETE);
+        redisClient.setValue(WORK_STATUS_KEY_PREFIX + token, status, WORK_STATUS_TTL_SEC);
     }
 }

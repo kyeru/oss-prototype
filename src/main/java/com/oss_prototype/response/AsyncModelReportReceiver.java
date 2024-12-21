@@ -1,8 +1,9 @@
-package com.oss_prototype.report;
+package com.oss_prototype.response;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.oss_prototype.detection.DetectionService;
+import com.oss_prototype.service.DetectionService;
+import com.oss_prototype.service.ReportService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;

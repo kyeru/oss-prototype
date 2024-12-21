@@ -1,8 +1,8 @@
 package com.oss_prototype;
 
-import com.oss_prototype.detection.DetectionService;
-import com.oss_prototype.detection.PluginRequest;
-import com.oss_prototype.report.ReportService;
+import com.oss_prototype.service.DetectionService;
+import com.oss_prototype.request.DetectionRequest;
+import com.oss_prototype.service.ReportService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class PluginRequestController {
     }
 
     @PostMapping("/detect")
-    public ResponseEntity<?> detect(@RequestBody PluginRequest requestData) {
+    public ResponseEntity<?> detect(@RequestBody DetectionRequest requestData) {
         String token = detectionService.detectionWorkflow(requestData);
         if (token == null) {
             // TODO return error hint

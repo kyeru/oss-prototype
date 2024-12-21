@@ -1,8 +1,9 @@
-package com.oss_prototype.report;
+package com.oss_prototype.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.oss_prototype.redis.RedisClientWrapper;
+import com.oss_prototype.db_utils.RedisClientWrapper;
+import com.oss_prototype.response.ModelReport;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

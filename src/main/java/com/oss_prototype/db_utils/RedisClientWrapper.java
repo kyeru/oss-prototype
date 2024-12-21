@@ -1,4 +1,4 @@
-package com.oss_prototype.redis;
+package com.oss_prototype.db_utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

@@ -1,4 +1,4 @@
-package com.oss_prototype.detection;
+package com.oss_prototype.request;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,5 +9,5 @@ import lombok.Setter;
 @Builder
 public class ModelTaskMessage {
     private String token;
-    private String payload;
+    private String requestData;
 }

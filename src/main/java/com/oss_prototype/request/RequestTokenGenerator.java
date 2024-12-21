@@ -1,4 +1,4 @@
-package com.oss_prototype.detection;
+package com.oss_prototype.request;
 
 import lombok.extern.slf4j.Slf4j;
 

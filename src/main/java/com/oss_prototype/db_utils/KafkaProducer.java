@@ -1,4 +1,4 @@
-package com.oss_prototype.kafka;
+package com.oss_prototype.db_utils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;

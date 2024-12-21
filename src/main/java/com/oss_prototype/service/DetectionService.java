@@ -1,9 +1,12 @@
-package com.oss_prototype.detection;
+package com.oss_prototype.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.oss_prototype.kafka.KafkaProducer;
-import com.oss_prototype.redis.RedisClientWrapper;
+import com.oss_prototype.db_utils.KafkaProducer;
+import com.oss_prototype.db_utils.RedisClientWrapper;
+import com.oss_prototype.request.DetectionRequest;
+import com.oss_prototype.request.ModelTaskMessage;
+import com.oss_prototype.request.RequestTokenGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +28,7 @@ public class DetectionService {
         this.redisClient = redisClient;
     }
 
-    public String detectionWorkflow(final PluginRequest request) {
+    public String detectionWorkflow(final DetectionRequest request) {
         log.info("plugin request: {}", request);
         if (request.getData() == null) {
             return null;
@@ -37,7 +40,7 @@ public class DetectionService {
             // 2. send request to kafka
             ModelTaskMessage taskMessage = ModelTaskMessage.builder()
                 .token(token)
-                .payload(request.getData())
+                .requestData(request.getData())
                 .build();
             String jsonTaskMessage = jsonMapper.writeValueAsString(taskMessage);
             kafkaProducer.sendMessage(jsonTaskMessage);

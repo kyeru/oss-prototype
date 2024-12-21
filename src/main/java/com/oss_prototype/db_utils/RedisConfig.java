@@ -1,4 +1,4 @@
-package com.oss_prototype.redis;
+package com.oss_prototype.db_utils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

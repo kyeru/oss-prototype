@@ -22,36 +22,24 @@ public class AsyncModelReportReceiver {
         jsonMapper.configure(JsonParser.Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true);
     }
 
-    @KafkaListener(
-        topics="${spring.kafka.consumer.topic}"
-    )
-    public void generateReport(final String content) {
-        ModelReport modelReport = parseModelReport(content);
+    @KafkaListener(topics="${spring.kafka.consumer.topic}")
+    public void storeReport(final String message) {
+        ModelReport modelReport = parseModelReport(message);
         if (modelReport == null) {
             return;
         }
-        log.info("generated model report: {}", modelReport);
 
-        // 1. identify model name and request token
-        String modelName = modelReport.getModelName();
-        String token = modelReport.getToken();
-
-        // 2. store the report with a dedicated key
-        String reportKey = reportService.getReportKey(modelName, token);
-        // TODO store report with the key
-        reportService.storeReport(reportKey, modelReport.getReport());
-
-        // 3. update task status
-        detectionService.updateTaskStatus(token, DetectionService.WORK_COMPLETE);
+        log.info("model report: {}", modelReport);
+        reportService.storeReport(modelReport);
     }
 
-    public ModelReport parseModelReport(final String report) {
+    private ModelReport parseModelReport(final String message) {
         try {
-            String decodedJson = jsonMapper.readValue(report, String.class);
-            log.info("report string: {}", decodedJson);
+            // double escaping from kafka message
+            String decodedJson = jsonMapper.readValue(message, String.class);
             return jsonMapper.readValue(decodedJson, ModelReport.class);
         } catch (Exception e) {
-            log.warn("report parsing error: {}", report, e);
+            log.warn("report parsing error: {}", message, e);
             return null;
         }
     }

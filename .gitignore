@@ -1,4 +1,5 @@
 build/
 gradle/
+logs/
 .gradle/
 .idea/

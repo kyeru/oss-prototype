@@ -4,13 +4,17 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.sql.Timestamp;
+
 @Getter
 @Setter
 @ToString
 public class DetectionRequest {
-//    private Timestamp timestamp;
-//    private String userInfo;
+    private Timestamp timestamp;
+    private String user;
     private String data;
-//    private String packageList;
-//    private String packageMetadata;
+
+    public String toString() {
+        return timestamp.toString() + " " + user + " " + data;
+    }
 }

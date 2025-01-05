@@ -1,3 +1,5 @@
 {
-  "data" : "request-data"
+  "timestamp": "2025-01-01T12:00:00.000",
+  "user": "Charlie Brown",
+  "data" : "package list and package metadata"
 }

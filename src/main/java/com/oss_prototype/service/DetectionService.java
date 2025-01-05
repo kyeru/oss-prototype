@@ -28,28 +28,27 @@ public class DetectionService {
         this.redisClient = redisClient;
     }
 
-    public String detectionWorkflow(final DetectionRequest request) {
+    public String processDetectionRequest(final DetectionRequest request) {
         log.info("plugin request: {}", request);
-        if (request.getData() == null) {
+        if (request == null) {
             return null;
         }
         try {
             // 1. generate token from request data
-            String token = RequestTokenGenerator.generate(request.getData());
+            String token = RequestTokenGenerator.generate(request);
 
-            // 2. send request to kafka
-            ModelTaskMessage taskMessage = ModelTaskMessage.builder()
+            // 2. send request to model servers via kafka
+            ModelTaskMessage modelTask = ModelTaskMessage.builder()
                 .token(token)
                 .requestData(request.getData())
                 .build();
-            String jsonTaskMessage = jsonMapper.writeValueAsString(taskMessage);
+            String jsonTaskMessage = jsonMapper.writeValueAsString(modelTask);
             kafkaProducer.sendMessage(jsonTaskMessage);
             log.info("message to models: {}", jsonTaskMessage);
 
-            // 3. create job status
+            // 3. create task status
             updateTaskStatus(token, WORK_IN_PROGRESS);
 
-            // 4. return token
             return token;
         } catch (JsonProcessingException e) {
             log.error("json processing error: {}", request);

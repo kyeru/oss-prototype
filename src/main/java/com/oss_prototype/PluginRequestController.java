@@ -23,7 +23,7 @@ public class PluginRequestController {
 
     @PostMapping("/detect")
     public ResponseEntity<?> detect(@RequestBody DetectionRequest requestData) {
-        String token = detectionService.detectionWorkflow(requestData);
+        String token = detectionService.processDetectionRequest(requestData);
         if (token == null) {
             // TODO return error hint
             return new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR);

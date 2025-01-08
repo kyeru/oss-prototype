@@ -36,15 +36,10 @@ public class DetectionService {
         try {
             // 1. generate token from request data
             String token = RequestTokenGenerator.generate(request);
+            log.info("request token generated: {}", token);
 
             // 2. send request to model servers via kafka
-            ModelTaskMessage modelTask = ModelTaskMessage.builder()
-                .token(token)
-                .requestData(request.getData())
-                .build();
-            String jsonTaskMessage = jsonMapper.writeValueAsString(modelTask);
-            kafkaProducer.sendMessage(jsonTaskMessage);
-            log.info("message to models: {}", jsonTaskMessage);
+            sendRequestMessage(token, request.getData());
 
             // 3. create task status
             updateTaskStatus(token, WORK_IN_PROGRESS);
@@ -60,7 +55,17 @@ public class DetectionService {
         return null;
     }
 
-    public void updateTaskStatus(final String token, final String status) {
+    private void sendRequestMessage(final String token, final String data) throws JsonProcessingException {
+        ModelTaskMessage modelTask = ModelTaskMessage.builder()
+            .token(token)
+            .requestData(data)
+            .build();
+        String jsonTaskMessage = jsonMapper.writeValueAsString(modelTask);
+        kafkaProducer.send(jsonTaskMessage);
+        log.info("message to models: {}", jsonTaskMessage);
+    }
+
+    private void updateTaskStatus(final String token, final String status) {
         redisClient.setValue(WORK_STATUS_KEY_PREFIX + token, status, WORK_STATUS_TTL_SEC);
     }
 }

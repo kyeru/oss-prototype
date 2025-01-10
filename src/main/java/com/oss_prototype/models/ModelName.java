@@ -1,7 +1,8 @@
 package com.oss_prototype.models;
 
 public enum ModelName {
-    MalignantPackageIdentifier("MPI");
+    MalignantPackageIdentifier("MPI"),
+    MockUpModel("mockup");
 
     private final String name;
 

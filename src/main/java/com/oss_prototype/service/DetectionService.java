@@ -10,6 +10,8 @@ import com.oss_prototype.request.RequestTokenGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+
 @Service
 @Slf4j
 public class DetectionService {
@@ -48,6 +50,8 @@ public class DetectionService {
         } catch (JsonProcessingException e) {
             log.error("json processing error: {}", request);
             // TODO return error code/message
+        } catch (UnsupportedEncodingException e) {
+            log.error("token generation error: {}", request);
         } catch (Exception e) {
             log.error("token generation failed: ", e);
             // TODO return error code/message

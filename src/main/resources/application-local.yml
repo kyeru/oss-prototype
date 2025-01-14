@@ -12,6 +12,10 @@ spring:
     host: localhost
     port: 6379
     password: CqpBB9pmZo
+  mongodb:
+    host: localhost
+    port: 27017
+    database: oss-prototype
 management:
   endpoint:
     shutdown:

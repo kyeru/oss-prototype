@@ -4,7 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oss_prototype.db_utils.RedisClientWrapper;
 import com.oss_prototype.db_utils.ReportRepository;
-import com.oss_prototype.models.ModelName;
+import com.oss_prototype.response.FinalReport;
+import com.oss_prototype.response.FinalReport.ModelReportEntry;
 import com.oss_prototype.response.ModelReport;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,34 +31,45 @@ public class ReportService {
     }
 
     public String generateReport(final String token) {
-        log.info("generate report using token {}", token);
-        // 1. check report from each model
-        Map<String, String> reports = new HashMap<>();
-        for (ModelName name : ModelName.values()) {
-            String reportKey = getReportKey(token, name.getName());
-            log.info("reading key {} from redis", reportKey);
-            String storedReport = redisClient.getValue(reportKey);
-            if (storedReport != null) {
-                reports.put(name.getName(), storedReport);
-            }
-        }
+        log.info("generate report for token {}", token);
 
-        ModelReport report = reportRepository.findByToken(token);
-        try {
-            String jsonReport = jsonMapper.writeValueAsString(report);
-            reports.put("overall", jsonReport);
-        } catch (JsonProcessingException e) {
-            log.warn("", e);
-        }
+        Map<String, String> modelReportMap = new HashMap<>();
+        FinalReport finalReport = new FinalReport();
+        finalReport.setToken(token);
+        // 1. collect stored model reports
+//        for (ModelName name : ModelName.values()) {
+//            String reportKey = getReportKey(token, name.getName());
+//            log.info("reading key {} from redis", reportKey);
+//            String storedReport = redisClient.getValue(reportKey);
+//            if (storedReport != null) {
+//                reports.put(name.getName(), storedReport);
+//            }
+//        }
 
-        // 2. combines reports
-        try {
-            log.warn("final report: {}", reports);
-            return jsonMapper.writeValueAsString(reports);
-        } catch (JsonProcessingException e) {
-            log.error("json processing error");
+        List<ModelReportEntry> modelReportEntries = new ArrayList<>();
+        List<ModelReport> reportList = reportRepository.findByToken(token);
+        for (ModelReport report : reportList) {
+//            try {
+//                String jsonReport = jsonMapper.writeValueAsString(report);
+//                log.info("adding report {}", jsonReport);
+//                modelReportMap.put(report.getModelName(), report)
+//                reports.put(report.getModelName(), jsonReport);
+            log.info("adding {} report: {}", report.getModelName(), report.getReport());
+            modelReportEntries.add(new ModelReportEntry(report.getModelName(), report.getReport()));
+//            } catch (JsonProcessingException e) {
+//                log.warn("report json parsing error: {}", report, e);
+//            }
         }
-        return null;
+        finalReport.setReports(modelReportEntries);
+
+        // 2. make a response in json format
+        try {
+//            return jsonMapper.writeValueAsString(reports);
+            return jsonMapper.writeValueAsString(finalReport);
+        } catch (JsonProcessingException e) {
+            log.error("json processing error: {}", finalReport, e);
+            return null;
+        }
     }
 
     public void storeReport(final ModelReport report) {

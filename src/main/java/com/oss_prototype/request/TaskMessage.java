@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class ModelTaskMessage {
+public class TaskMessage {
     private String token;
-    private String requestData;
+    private String payload;
 }

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oss_prototype.db_utils.KafkaProducer;
 import com.oss_prototype.db_utils.RedisClientWrapper;
 import com.oss_prototype.request.DetectionRequest;
-import com.oss_prototype.request.ModelTaskMessage;
+import com.oss_prototype.request.TaskMessage;
 import com.oss_prototype.request.RequestTokenGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,12 +41,13 @@ public class DetectionService {
             String token = RequestTokenGenerator.generate(request);
             log.info("request token generated: {}", token);
 
-            // 2. send request to model servers via kafka
+            // 2. deliver the request to model servers via kafka
             sendRequestMessage(token, request.getData());
 
             // 3. create task status
             updateTaskStatus(token, WORK_IN_PROGRESS);
 
+            // 4. return url-encoded token
             String urlEncodedToken = URLEncoder.encode(token, "UTF-8");
             return urlEncodedToken;
         } catch (JsonProcessingException e) {
@@ -60,9 +61,9 @@ public class DetectionService {
     }
 
     private void sendRequestMessage(final String token, final String data) throws JsonProcessingException {
-        ModelTaskMessage modelTask = ModelTaskMessage.builder()
+        TaskMessage modelTask = TaskMessage.builder()
             .token(token)
-            .requestData(data)
+            .payload(data)
             .build();
         String jsonTaskMessage = jsonMapper.writeValueAsString(modelTask);
         kafkaProducer.send(jsonTaskMessage);

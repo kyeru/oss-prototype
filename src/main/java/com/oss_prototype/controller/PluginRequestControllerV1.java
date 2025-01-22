@@ -1,4 +1,4 @@
-package com.oss_prototype;
+package com.oss_prototype.controller;
 
 import com.oss_prototype.service.DetectionService;
 import com.oss_prototype.request.DetectionRequest;
@@ -9,20 +9,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping(path = "api/v1/detection")
 @Slf4j
-public class PluginRequestController {
+public class PluginRequestControllerV1 {
     private final DetectionService detectionService;
     private final ReportService reportService;
 
-    public PluginRequestController(
+    public PluginRequestControllerV1(
             final DetectionService detectionService,
             final ReportService reportService) {
         this.detectionService = detectionService;
         this.reportService = reportService;
     }
 
-    @PostMapping("/detect")
-    public ResponseEntity<?> detect(@RequestBody DetectionRequest requestData) {
+    @PostMapping("/init")
+    public ResponseEntity<?> initDetection(@RequestBody DetectionRequest requestData) {
         String token = detectionService.processDetectionRequest(requestData);
         if (token == null) {
             // TODO return error hint
@@ -32,8 +33,8 @@ public class PluginRequestController {
         }
     }
 
-    @GetMapping("/report")
-    public ResponseEntity<?> report(@RequestParam String token) {
+    @GetMapping("/progress")
+    public ResponseEntity<?> checkProgress(@RequestParam String token) {
         String report = reportService.generateReport(token);
         if (report == null) {
             // TODO return error hint

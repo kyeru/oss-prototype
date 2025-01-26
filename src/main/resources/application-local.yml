@@ -16,6 +16,9 @@ spring:
     host: localhost
     port: 27017
     database: oss-prototype
+  data:
+    mongodb:
+      database: oss-prototype
 management:
   endpoint:
     shutdown:

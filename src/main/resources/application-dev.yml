@@ -12,6 +12,12 @@ spring:
     host: 115.145.179.193
     port: 15002
     password: CqpBB9pmZo
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: oss-prototype
+# monitoring
 management:
   endpoint:
     shutdown:

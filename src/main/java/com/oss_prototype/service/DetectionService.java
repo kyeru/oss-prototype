@@ -10,9 +10,6 @@ import com.oss_prototype.request.RequestTokenGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 @Service
 @Slf4j
 public class DetectionService {
@@ -47,13 +44,10 @@ public class DetectionService {
             // 3. create task status
             updateTaskStatus(token, WORK_IN_PROGRESS);
 
-            // 4. return url-encoded token
-            String urlEncodedToken = URLEncoder.encode(token, "UTF-8");
-            return urlEncodedToken;
+            // 4. return the token
+            return token;
         } catch (JsonProcessingException e) {
             log.error("json processing error: {}", request.toString(), e);
-        } catch (UnsupportedEncodingException e) {
-            log.error("token url encoding error: {}", request.toString(), e);
         } catch (Exception e) {
             log.error("token generation failed: ", e);
         }

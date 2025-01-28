@@ -17,6 +17,8 @@ spring:
       host: localhost
       port: 27017
       database: oss-prototype
+server:
+  port: 15003
 # monitoring
 management:
   endpoint:

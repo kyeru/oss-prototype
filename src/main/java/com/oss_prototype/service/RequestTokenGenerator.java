@@ -1,4 +1,6 @@
-package com.oss_prototype.request;
+package com.oss_prototype.service;
+
+import com.oss_prototype.request.DetectionRequest;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

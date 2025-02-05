@@ -1,6 +1,6 @@
 package com.oss_prototype.db_utils;
 
-import com.oss_prototype.response.ModelReport;
+import com.oss_prototype.models.ModelReport;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

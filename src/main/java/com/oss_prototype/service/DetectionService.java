@@ -5,8 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oss_prototype.db_utils.KafkaProducer;
 import com.oss_prototype.db_utils.RedisClientWrapper;
 import com.oss_prototype.request.DetectionRequest;
-import com.oss_prototype.request.TaskMessage;
-import com.oss_prototype.request.RequestTokenGenerator;
+import com.oss_prototype.models.TaskMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,8 @@
-package com.oss_prototype.response;
+package com.oss_prototype.service;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.oss_prototype.models.ModelReport;
 import com.oss_prototype.service.DetectionService;
 import com.oss_prototype.service.ReportService;
 import lombok.extern.slf4j.Slf4j;

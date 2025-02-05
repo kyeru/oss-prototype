@@ -1,4 +1,4 @@
-package com.oss_prototype.response;
+package com.oss_prototype.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

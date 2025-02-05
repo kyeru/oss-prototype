@@ -6,7 +6,7 @@ import com.oss_prototype.db_utils.RedisClientWrapper;
 import com.oss_prototype.db_utils.ReportRepository;
 import com.oss_prototype.response.FinalReport;
 import com.oss_prototype.response.FinalReport.ModelReportEntry;
-import com.oss_prototype.response.ModelReport;
+import com.oss_prototype.models.ModelReport;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

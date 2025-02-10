@@ -13,4 +13,8 @@ public class ModelReport {
     private String token;
     private String modelName;
     private String report;
+
+    public String getId() {
+        return token + '-' + modelName;
+    }
 }

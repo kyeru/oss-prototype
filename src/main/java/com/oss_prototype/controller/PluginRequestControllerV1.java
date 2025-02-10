@@ -1,7 +1,7 @@
 package com.oss_prototype.controller;
 
 import com.oss_prototype.service.DetectionService;
-import com.oss_prototype.request.DetectionRequest;
+import com.oss_prototype.request.TaskRequest;
 import com.oss_prototype.service.ReportService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -29,7 +29,7 @@ public class PluginRequestControllerV1 {
     @PostMapping("/init")
     @Operation(summary = "탐지 시작 요청")
     public ResponseEntity<?> initDetection(
-            @Parameter(description = "request from plugins") @RequestBody DetectionRequest requestData) {
+            @Parameter(description = "request from plugins") @RequestBody TaskRequest requestData) {
         String token = detectionService.processDetectionRequest(requestData);
         if (token == null) {
             return new ResponseEntity<>("token generation failed", HttpStatus.INTERNAL_SERVER_ERROR);

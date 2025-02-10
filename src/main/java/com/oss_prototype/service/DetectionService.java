@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oss_prototype.db_utils.KafkaProducer;
 import com.oss_prototype.db_utils.RedisClientWrapper;
-import com.oss_prototype.request.DetectionRequest;
+import com.oss_prototype.request.TaskRequest;
 import com.oss_prototype.models.TaskMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class DetectionService {
         this.redisClient = redisClient;
     }
 
-    public String processDetectionRequest(final DetectionRequest request) {
+    public String processDetectionRequest(final TaskRequest request) {
         log.info("plugin request: {}", request);
         if (request == null) {
             return null;

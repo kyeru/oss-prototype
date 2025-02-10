@@ -2,16 +2,22 @@ package com.oss_prototype.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.client.MongoClients;
 import com.oss_prototype.db_utils.RedisClientWrapper;
-import com.oss_prototype.db_utils.ReportRepository;
 import com.oss_prototype.response.FinalReport;
 import com.oss_prototype.response.FinalReport.ModelReportEntry;
 import com.oss_prototype.models.ModelReport;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 @Service
 @Slf4j
@@ -22,18 +28,18 @@ public class ReportService {
     private final ObjectMapper jsonMapper;
     private final RedisClientWrapper redisClient;
 
-    @Autowired
-    private ReportRepository reportRepository;
+    private MongoOperations mongoTemplate;
 
     public ReportService(final RedisClientWrapper redisClient) {
         this.jsonMapper = new ObjectMapper();
         this.redisClient = redisClient;
+        this.mongoTemplate = new MongoTemplate(
+            new SimpleMongoClientDatabaseFactory(MongoClients.create(), "local"));
     }
 
     public String generateReport(final String token) {
         log.info("generate report for token {}", token);
 
-        Map<String, String> modelReportMap = new HashMap<>();
         FinalReport finalReport = new FinalReport();
         finalReport.setToken(token);
         // 1. collect stored model reports
@@ -46,19 +52,13 @@ public class ReportService {
 //            }
 //        }
 
+        List<ModelReport> reportList = mongoTemplate.query(ModelReport.class)
+            .matching(query(where("token").is(token)))
+            .all();
         List<ModelReportEntry> modelReportEntries = new ArrayList<>();
-        List<ModelReport> reportList = reportRepository.findByToken(token);
         for (ModelReport report : reportList) {
-//            try {
-//                String jsonReport = jsonMapper.writeValueAsString(report);
-//                log.info("adding report {}", jsonReport);
-//                modelReportMap.put(report.getModelName(), report)
-//                reports.put(report.getModelName(), jsonReport);
             log.info("adding {} report: {}", report.getModelName(), report.getReport());
             modelReportEntries.add(new ModelReportEntry(report.getModelName(), report.getReport()));
-//            } catch (JsonProcessingException e) {
-//                log.warn("report json parsing error: {}", report, e);
-//            }
         }
         finalReport.setReports(modelReportEntries);
 
@@ -75,7 +75,11 @@ public class ReportService {
     public void storeReport(final ModelReport report) {
         String reportKey = getReportKey(report.getToken(), report.getModelName());
         redisClient.setValue(reportKey, report.getReport(), REPORT_TTL_SEC);
-        reportRepository.save(report);
+        mongoTemplate.update(ModelReport.class)
+            .matching(query(where("token").is(report.getToken())
+                    .and("modelName").is(report.getModelName())))
+                .apply(update("report", report.getReport()))
+                .upsert();
     }
 
     private String getReportKey(final String token, final String modelName) {

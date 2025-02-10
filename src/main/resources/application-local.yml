@@ -11,7 +11,7 @@ spring:
   redis:
     host: localhost
     port: 6379
-    password: y6SNhEUeEQ
+    password: XouW7bQfyD
   data:
     mongodb:
       host: localhost

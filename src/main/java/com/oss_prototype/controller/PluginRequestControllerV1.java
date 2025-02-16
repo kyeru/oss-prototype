@@ -1,6 +1,6 @@
 package com.oss_prototype.controller;
 
-import com.oss_prototype.service.DetectionService;
+import com.oss_prototype.service.ModelTaskService;
 import com.oss_prototype.request.TaskRequest;
 import com.oss_prototype.service.ReportService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @Tag(name = "plugin API v1")
 public class PluginRequestControllerV1 {
-    private final DetectionService detectionService;
+    private final ModelTaskService modelTaskService;
     private final ReportService reportService;
 
     public PluginRequestControllerV1(
-            final DetectionService detectionService,
+            final ModelTaskService modelTaskService,
             final ReportService reportService) {
-        this.detectionService = detectionService;
+        this.modelTaskService = modelTaskService;
         this.reportService = reportService;
     }
 
@@ -30,7 +30,7 @@ public class PluginRequestControllerV1 {
     @Operation(summary = "탐지 시작 요청")
     public ResponseEntity<?> initDetection(
             @Parameter(description = "request from plugins") @RequestBody TaskRequest requestData) {
-        String token = detectionService.processDetectionRequest(requestData);
+        String token = modelTaskService.processDetectionRequest(requestData);
         if (token == null) {
             return new ResponseEntity<>("token generation failed", HttpStatus.INTERNAL_SERVER_ERROR);
         } else {

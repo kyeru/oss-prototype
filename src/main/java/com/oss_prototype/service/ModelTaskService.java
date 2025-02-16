@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class DetectionService {
+public class ModelTaskService {
     public static final String WORK_STATUS_KEY_PREFIX = "status-";
     public static final String WORK_IN_PROGRESS = "in-progress";
     public static final String WORK_COMPLETE = "complete";
@@ -21,7 +21,7 @@ public class DetectionService {
     private final KafkaProducer kafkaProducer;
     private final RedisClientWrapper redisClient;
 
-    public DetectionService(final KafkaProducer kafkaProducer, final RedisClientWrapper redisClient) {
+    public ModelTaskService(final KafkaProducer kafkaProducer, final RedisClientWrapper redisClient) {
         this.jsonMapper = new ObjectMapper();
         this.kafkaProducer = kafkaProducer;
         this.redisClient = redisClient;

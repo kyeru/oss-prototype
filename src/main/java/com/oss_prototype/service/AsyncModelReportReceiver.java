@@ -3,8 +3,6 @@ package com.oss_prototype.service;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oss_prototype.models.ModelReport;
-import com.oss_prototype.service.DetectionService;
-import com.oss_prototype.service.ReportService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -13,11 +11,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class AsyncModelReportReceiver {
     private final ObjectMapper jsonMapper;
-    private DetectionService detectionService;
+    private ModelTaskService modelTaskService;
     private ReportService reportService;
 
-    public AsyncModelReportReceiver(DetectionService detectionService, ReportService reportService) {
-        this.detectionService = detectionService;
+    public AsyncModelReportReceiver(ModelTaskService modelTaskService, ReportService reportService) {
+        this.modelTaskService = modelTaskService;
         this.reportService = reportService;
         jsonMapper = new ObjectMapper();
         jsonMapper.configure(JsonParser.Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true);

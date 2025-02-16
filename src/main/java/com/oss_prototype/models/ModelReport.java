@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -12,6 +14,8 @@ import lombok.Setter;
 public class ModelReport {
     private String token;
     private String modelName;
+    private Timestamp taskStartTime;
+    private Timestamp taskEndTime;
     private String report;
 
     public String getId() {

@@ -30,7 +30,7 @@ public class PluginRequestControllerV1 {
     @Operation(summary = "탐지 시작 요청")
     public ResponseEntity<?> initDetection(
             @Parameter(description = "request from plugins") @RequestBody TaskRequest requestData) {
-        String token = modelTaskService.processDetectionRequest(requestData);
+        String token = modelTaskService.processTaskRequest(requestData);
         if (token == null) {
             return new ResponseEntity<>("token generation failed", HttpStatus.INTERNAL_SERVER_ERROR);
         } else {

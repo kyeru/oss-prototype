@@ -27,7 +27,7 @@ public class ModelTaskService {
         this.redisClient = redisClient;
     }
 
-    public String processDetectionRequest(final TaskRequest request) {
+    public String processTaskRequest(final TaskRequest request) {
         log.info("plugin request: {}", request);
         if (request == null) {
             return null;
@@ -46,7 +46,7 @@ public class ModelTaskService {
             // 4. return the token
             return token;
         } catch (JsonProcessingException e) {
-            log.error("json processing error: {}", request.toString(), e);
+            log.error("json processing error: {}", request, e);
         } catch (Exception e) {
             log.error("token generation failed: ", e);
         }

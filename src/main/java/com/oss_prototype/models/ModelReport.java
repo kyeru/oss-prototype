@@ -1,9 +1,6 @@
 package com.oss_prototype.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Timestamp;
 
@@ -11,9 +8,11 @@ import java.sql.Timestamp;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ModelReport {
     private String token;
     private String modelName;
+    private String status;
     private Timestamp taskStartTime;
     private Timestamp taskEndTime;
     private String report;

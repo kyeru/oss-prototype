@@ -25,6 +25,7 @@ public class AsyncModelReportReceiver {
     public void storeReport(final String message) {
         ModelReport modelReport = parseModelReport(message);
         if (modelReport == null) {
+            log.warn("model report is null");
             return;
         }
 

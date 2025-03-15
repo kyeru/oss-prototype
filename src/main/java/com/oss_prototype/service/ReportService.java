@@ -64,8 +64,8 @@ public class ReportService {
 
     public void storeReport(final ModelReport report) {
         String reportKey = getReportKey(report.getToken(), report.getModelName());
-        redisClient.setValue(reportKey, report.getReport(), REPORT_TTL_SEC);
-        mongoClient.storeModelReport(report.getToken(), report.getModelName(), report.getReport());
+//        redisClient.setValue(reportKey, report.getReport(), REPORT_TTL_SEC);
+        mongoClient.storeModelReport(report);
     }
 
     private String getReportKey(final String token, final String modelName) {

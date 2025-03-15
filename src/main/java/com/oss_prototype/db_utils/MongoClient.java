@@ -5,6 +5,7 @@ import com.oss_prototype.models.ModelReport;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -29,10 +30,24 @@ public class MongoClient {
         return reportList;
     }
 
-    public void storeModelReport(final String token, final String modelName, final String report) {
+    public List<ModelReport> fetchAllModelReports(final int limit) {
+        List<ModelReport> reportList = mongoTemplate
+            .find(new Query().limit(limit), ModelReport.class);
+        return reportList;
+    }
+
+    public void storeModelReport(final ModelReport report) {
         mongoTemplate.update(ModelReport.class)
-            .matching(query(where("token").is(token).and("modelName").is(modelName)))
-            .apply(update("report", report))
+            .matching(
+                query(where("token").is(report.getToken())
+                    .and("modelName").is(report.getModelName()))
+            )
+            .apply(
+                update("report", report.getReport())
+//                    .set("status", report.getStatus())
+                    .set("taskStartTime", report.getTaskStartTime())
+                    .set("taskEndTime", report.getTaskEndTime())
+            )
             .upsert();
     }
 }

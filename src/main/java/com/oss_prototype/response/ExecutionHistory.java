@@ -6,13 +6,17 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Getter
 @Setter
 @ToString
+@Builder
 public class ExecutionHistory {
     private Timestamp timestamp;
     private String token;
+
+    private List<TaskResult> taskResults;
 
     @Getter
     @Setter

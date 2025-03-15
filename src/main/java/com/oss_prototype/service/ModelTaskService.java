@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oss_prototype.db_utils.KafkaProducer;
 import com.oss_prototype.db_utils.RedisClientWrapper;
 import com.oss_prototype.request.TaskRequest;
-import com.oss_prototype.models.TaskMessage;
+import com.oss_prototype.models.TaskRequestMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +54,7 @@ public class ModelTaskService {
     }
 
     private void sendRequestMessage(final String token, final String data) throws JsonProcessingException {
-        TaskMessage modelTask = TaskMessage.builder()
+        TaskRequestMessage modelTask = TaskRequestMessage.builder()
             .token(token)
             .payload(data)
             .build();

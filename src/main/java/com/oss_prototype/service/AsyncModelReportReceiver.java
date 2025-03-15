@@ -2,7 +2,7 @@ package com.oss_prototype.service;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.oss_prototype.models.ModelReport;
+import com.oss_prototype.models.TaskResponseMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -23,21 +23,21 @@ public class AsyncModelReportReceiver {
 
     @KafkaListener(topics="${spring.kafka.consumer.topic}")
     public void storeReport(final String message) {
-        ModelReport modelReport = parseModelReport(message);
-        if (modelReport == null) {
+        TaskResponseMessage taskResponseMessage = parseModelReport(message);
+        if (taskResponseMessage == null) {
             log.warn("model report is null");
             return;
         }
 
-        log.info("model report: {}", modelReport);
-        reportService.storeReport(modelReport);
+        log.info("model report: {}", taskResponseMessage);
+        reportService.storeReport(taskResponseMessage);
     }
 
-    private ModelReport parseModelReport(final String message) {
+    private TaskResponseMessage parseModelReport(final String message) {
         try {
             // double escaping from kafka message
             String decodedJson = jsonMapper.readValue(message, String.class);
-            return jsonMapper.readValue(decodedJson, ModelReport.class);
+            return jsonMapper.readValue(decodedJson, TaskResponseMessage.class);
         } catch (Exception e) {
             log.warn("report parsing error: {}", message, e);
             return null;

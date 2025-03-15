@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @ToString
 @Document
-public class ModelReport {
+public class TaskResponseMessage {
     @Field
     private String token;
     @Field

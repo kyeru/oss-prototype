@@ -1,14 +1,13 @@
 package com.oss_prototype.service;
 
 import com.oss_prototype.db_utils.MongoClient;
-import com.oss_prototype.models.ModelReport;
+import com.oss_prototype.models.TaskResponseMessage;
 import com.oss_prototype.response.ExecutionHistory;
 import com.oss_prototype.response.ExecutionHistory.TaskResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,7 +30,7 @@ public class ExecutionHistoryService {
 
     private List<TaskResult> fetchTaskResults() {
         List<TaskResult> taskResults = new ArrayList<>();
-        List<ModelReport> reports = mongoClient.fetchAllModelReports(10);
+        List<TaskResponseMessage> reports = mongoClient.fetchAllModelReports(10);
         reports.stream().forEach(
             report -> taskResults.add(TaskResult.builder()
                 .modelName(report.getModelName())

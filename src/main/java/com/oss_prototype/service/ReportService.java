@@ -6,7 +6,7 @@ import com.oss_prototype.db_utils.MongoClient;
 import com.oss_prototype.db_utils.RedisClientWrapper;
 import com.oss_prototype.response.FinalReport;
 import com.oss_prototype.response.FinalReport.ModelReportEntry;
-import com.oss_prototype.models.ModelReport;
+import com.oss_prototype.models.TaskResponseMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,9 +45,9 @@ public class ReportService {
 //            }
 //        }
 
-        List<ModelReport> reportList = mongoClient.fetchModelReports(token);
+        List<TaskResponseMessage> reportList = mongoClient.fetchModelReports(token);
         List<ModelReportEntry> modelReportEntries = new ArrayList<>();
-        for (ModelReport report : reportList) {
+        for (TaskResponseMessage report : reportList) {
             log.info("adding {} report: {}", report.getModelName(), report.getReport());
             modelReportEntries.add(new ModelReportEntry(report.getModelName(), report.getReport()));
         }
@@ -62,7 +62,7 @@ public class ReportService {
         }
     }
 
-    public void storeReport(final ModelReport report) {
+    public void storeReport(final TaskResponseMessage report) {
         String reportKey = getReportKey(report.getToken(), report.getModelName());
 //        redisClient.setValue(reportKey, report.getReport(), REPORT_TTL_SEC);
         mongoClient.storeModelReport(report);

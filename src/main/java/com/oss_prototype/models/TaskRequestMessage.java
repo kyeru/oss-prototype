@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @Builder
 @ToString
-public class TaskMessage {
+public class TaskRequestMessage {
     private String token;
     private String payload;
 }

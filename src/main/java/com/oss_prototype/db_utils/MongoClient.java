@@ -1,7 +1,7 @@
 package com.oss_prototype.db_utils;
 
 import com.mongodb.client.MongoClients;
-import com.oss_prototype.models.ModelReport;
+import com.oss_prototype.models.TaskResponseMessage;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
@@ -23,21 +23,21 @@ public class MongoClient {
             new SimpleMongoClientDatabaseFactory(MongoClients.create(), "local"));
     }
 
-    public List<ModelReport> fetchModelReports(final String token) {
-        List<ModelReport> reportList = mongoTemplate.query(ModelReport.class)
+    public List<TaskResponseMessage> fetchModelReports(final String token) {
+        List<TaskResponseMessage> reportList = mongoTemplate.query(TaskResponseMessage.class)
             .matching(query(where("token").is(token)))
             .all();
         return reportList;
     }
 
-    public List<ModelReport> fetchAllModelReports(final int limit) {
-        List<ModelReport> reportList = mongoTemplate
-            .find(new Query().limit(limit), ModelReport.class);
+    public List<TaskResponseMessage> fetchAllModelReports(final int limit) {
+        List<TaskResponseMessage> reportList = mongoTemplate
+            .find(new Query().limit(limit), TaskResponseMessage.class);
         return reportList;
     }
 
-    public void storeModelReport(final ModelReport report) {
-        mongoTemplate.update(ModelReport.class)
+    public void storeModelReport(final TaskResponseMessage report) {
+        mongoTemplate.update(TaskResponseMessage.class)
             .matching(
                 query(where("token").is(report.getToken())
                     .and("modelName").is(report.getModelName()))

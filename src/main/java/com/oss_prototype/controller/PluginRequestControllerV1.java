@@ -27,7 +27,7 @@ public class PluginRequestControllerV1 {
     }
 
     @PostMapping("/init")
-    @Operation(summary = "탐지 시작 요청")
+    @Operation(summary = "작업 요청")
     public ResponseEntity<?> initDetection(
             @Parameter(description = "request from plugins") @RequestBody TaskRequest requestData) {
         String token = modelTaskService.processTaskRequest(requestData);
@@ -39,7 +39,7 @@ public class PluginRequestControllerV1 {
     }
 
     @GetMapping("/progress")
-    @Operation(summary = "탐지 진행 상황과 결과 확인")
+    @Operation(summary = "실행 결과 확인")
     public ResponseEntity<?> checkProgress(@RequestParam String token) {
         String report = reportService.generateReport(token);
         if (report == null) {

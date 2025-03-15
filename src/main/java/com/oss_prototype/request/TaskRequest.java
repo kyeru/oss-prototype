@@ -15,9 +15,16 @@ import java.sql.Timestamp;
 public class TaskRequest {
     private Timestamp timestamp;
 
-    @Schema(example = "{ json map (will be defined later) }")
-    private String metadata;
+    @Schema
+    private Metadata metadata;
 
     @Schema(example = "task payload here")
     private String data;
+
+    public static class Metadata {
+        @Schema(example = "my-user")
+        private String user;
+        @Schema(example = "vulnerability")
+        private String taskType;
+    }
 }

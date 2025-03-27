@@ -38,7 +38,7 @@ public class ModelTaskService {
             log.info("request token generated: {}", token);
 
             // 2. deliver the request to model servers via kafka
-            sendRequestMessage(token, request.getData());
+            sendRequestMessage(token, request);
 
             // 3. create task status
             updateTaskStatus(token, WORK_IN_PROGRESS);
@@ -53,10 +53,12 @@ public class ModelTaskService {
         return null;
     }
 
-    private void sendRequestMessage(final String token, final String data) throws JsonProcessingException {
+    private void sendRequestMessage(final String token, final TaskRequest request) throws JsonProcessingException {
         TaskRequestMessage modelTask = TaskRequestMessage.builder()
+            .timestamp(request.getTimestamp())
             .token(token)
-            .payload(data)
+            .user(request.getMetadata().getUser())
+            .value(request.getData())
             .build();
         String jsonTaskMessage = jsonMapper.writeValueAsString(modelTask);
         kafkaProducer.send(jsonTaskMessage);

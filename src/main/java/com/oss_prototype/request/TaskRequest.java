@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 @ToString
 @Builder
 public class TaskRequest {
+    @Schema
     private Timestamp timestamp;
 
     @Schema
@@ -21,6 +22,9 @@ public class TaskRequest {
     @Schema(example = "task payload here")
     private String data;
 
+    @Getter
+    @Setter
+    @ToString
     public static class Metadata {
         @Schema(example = "my-user")
         private String user;

@@ -1,10 +1,9 @@
 package com.oss_prototype.db_utils;
 
-import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoClient;
 import com.oss_prototype.models.TaskResponseMessage;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
@@ -15,12 +14,11 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
 @Component
-public class MongoClient {
+public class MongoClientWrapper {
     private MongoOperations mongoTemplate;
 
-    public MongoClient() {
-        this.mongoTemplate = new MongoTemplate(
-            new SimpleMongoClientDatabaseFactory(MongoClients.create(), "local"));
+    public MongoClientWrapper(MongoClient mongoClient) {
+        this.mongoTemplate = new MongoTemplate(mongoClient, "oss");
     }
 
     public List<TaskResponseMessage> fetchModelReports(final String token) {

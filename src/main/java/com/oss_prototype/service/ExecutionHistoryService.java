@@ -1,6 +1,6 @@
 package com.oss_prototype.service;
 
-import com.oss_prototype.db_utils.MongoClient;
+import com.oss_prototype.db_utils.MongoClientWrapper;
 import com.oss_prototype.models.TaskResponseMessage;
 import com.oss_prototype.response.ExecutionHistory;
 import com.oss_prototype.response.ExecutionHistory.TaskResult;
@@ -18,7 +18,7 @@ import java.util.Optional;
 @Slf4j
 public class ExecutionHistoryService {
     @Autowired
-    private MongoClient mongoClient;
+    private MongoClientWrapper mongoClientWrapper;
 
     public ExecutionHistory getHistory(final String user) {
         List<TaskResult> taskResults = fetchTaskResults();
@@ -30,7 +30,7 @@ public class ExecutionHistoryService {
 
     private List<TaskResult> fetchTaskResults() {
         List<TaskResult> taskResults = new ArrayList<>();
-        List<TaskResponseMessage> reports = mongoClient.fetchAllModelReports(10);
+        List<TaskResponseMessage> reports = mongoClientWrapper.fetchAllModelReports(10);
         reports.stream().forEach(
             report -> taskResults.add(TaskResult.builder()
                 .modelName(report.getModelName())

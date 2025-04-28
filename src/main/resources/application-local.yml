@@ -14,9 +14,13 @@ spring:
     password: XouW7bQfyD
   data:
     mongodb:
-      host: localhost
-      port: 27017
-      database: oss-prototype
+      host: 192.168.49.2
+      port: 30017
+      database: oss
+#      username: oss-root
+#      password: oss-root1!
+      username: oss-user
+      password: oss-user1!
 # monitoring
 management:
   endpoint:

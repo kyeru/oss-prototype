@@ -2,7 +2,7 @@ package com.oss_prototype.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.oss_prototype.db_utils.MongoClient;
+import com.oss_prototype.db_utils.MongoClientWrapper;
 import com.oss_prototype.db_utils.RedisClientWrapper;
 import com.oss_prototype.response.FinalReport;
 import com.oss_prototype.response.FinalReport.ModelReportEntry;
@@ -23,7 +23,7 @@ public class ReportService {
     private final RedisClientWrapper redisClient;
 
     @Autowired
-    private MongoClient mongoClient;
+    private MongoClientWrapper mongoClientWrapper;
 
     public ReportService(final RedisClientWrapper redisClient) {
         this.jsonMapper = new ObjectMapper();
@@ -45,7 +45,7 @@ public class ReportService {
 //            }
 //        }
 
-        List<TaskResponseMessage> reportList = mongoClient.fetchModelReports(token);
+        List<TaskResponseMessage> reportList = mongoClientWrapper.fetchModelReports(token);
         List<ModelReportEntry> modelReportEntries = new ArrayList<>();
         for (TaskResponseMessage report : reportList) {
             log.info("adding {} report: {}", report.getModelName(), report.getReport());
@@ -65,7 +65,7 @@ public class ReportService {
     public void storeReport(final TaskResponseMessage report) {
         String reportKey = getReportKey(report.getToken(), report.getModelName());
 //        redisClient.setValue(reportKey, report.getReport(), REPORT_TTL_SEC);
-        mongoClient.storeModelReport(report);
+        mongoClientWrapper.storeModelReport(report);
     }
 
     private String getReportKey(final String token, final String modelName) {

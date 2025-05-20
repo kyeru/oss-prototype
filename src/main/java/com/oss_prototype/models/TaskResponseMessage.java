@@ -16,11 +16,15 @@ import java.time.LocalDateTime;
 @Document
 public class TaskResponseMessage {
     @Field
-    private String token;
-    @Field
     private String modelName;
     @Field
-    private String status;
+    private String modelVersion;
+    @Field
+    private String token;
+    @Field
+    private String returnCode;
+    @Field
+    private String errorMessage;
     @Field
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime taskStartTime;

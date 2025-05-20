@@ -15,6 +15,8 @@ import java.util.List;
 public class ExecutionHistory {
     private Timestamp timestamp;
     private String token;
+    private String user;
+    private String taskType;
 
     private List<TaskResult> taskResults;
 
@@ -24,7 +26,11 @@ public class ExecutionHistory {
     @ToString
     public static class TaskResult {
         private String modelName;
-        private String status;
+        private String modelVersion;
+        private String returnCode;
+        private String errorMessage;
+        private Timestamp taskStartTime;
+        private Timestamp taskEndTime;
         private long timeConsumed;    // in msec
     }
 }

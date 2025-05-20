@@ -13,12 +13,12 @@ import java.sql.Timestamp;
 @ToString
 @Builder
 public class TaskRequest {
+    @Schema(example = "1")
+    private String version;
     @Schema
     private Timestamp timestamp;
-
     @Schema
     private Metadata metadata;
-
     @Schema(example = "task payload here")
     private String data;
 

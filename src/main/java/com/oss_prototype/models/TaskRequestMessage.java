@@ -13,11 +13,10 @@ import java.sql.Timestamp;
 @Builder
 @ToString
 public class TaskRequestMessage {
+    private String version;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss.SSSZ", timezone = "UTC")
     private Timestamp timestamp;
+    private String taskType;
     private String token;
-    private String user;
-    // temporary field for test
-    private String modelName;
-    private String value;
+    private String payload;
 }

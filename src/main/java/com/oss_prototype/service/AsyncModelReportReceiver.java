@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class AsyncModelReportReceiver {
     private final ObjectMapper jsonMapper;
-    private ModelTaskService modelTaskService;
+//    private ModelTaskService modelTaskService;
     private ReportService reportService;
 
     public AsyncModelReportReceiver(ModelTaskService modelTaskService, ReportService reportService) {
-        this.modelTaskService = modelTaskService;
+//        this.modelTaskService = modelTaskService;
         this.reportService = reportService;
         jsonMapper = new ObjectMapper();
         jsonMapper.configure(JsonParser.Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true);
@@ -23,23 +23,23 @@ public class AsyncModelReportReceiver {
 
     @KafkaListener(topics="${spring.kafka.consumer.topic}")
     public void storeReport(final String message) {
-        TaskResponseMessage taskResponseMessage = parseModelReport(message);
+        TaskResponseMessage taskResponseMessage = parseModelResponse(message);
         if (taskResponseMessage == null) {
-            log.warn("model report is null");
+            log.warn("model response is null");
             return;
         }
 
-        log.info("model report: {}", taskResponseMessage);
+        log.info("model response: {}", taskResponseMessage);
         reportService.storeReport(taskResponseMessage);
     }
 
-    private TaskResponseMessage parseModelReport(final String message) {
+    private TaskResponseMessage parseModelResponse(final String message) {
         try {
-            // double escaping from kafka message
+            // double decoding: kafka message -> json -> object
             String decodedJson = jsonMapper.readValue(message, String.class);
             return jsonMapper.readValue(decodedJson, TaskResponseMessage.class);
         } catch (Exception e) {
-            log.warn("report parsing error: {}", message, e);
+            log.warn("model response parsing error: {}", message, e);
             return null;
         }
     }
